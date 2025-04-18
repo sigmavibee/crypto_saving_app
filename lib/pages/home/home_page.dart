@@ -1,13 +1,44 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:percent_indicator/percent_indicator.dart';
 
+import '../../services/auth_services.dart';
 import '../../styles/colors.dart';
 import '../../styles/text_style.dart';
+import '../../models/user.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key? key}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  String? _username;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchUsername(); // Call fetchUsername when the widget is initialized
+  }
+
+  Future<void> fetchUsername() async {
+    try {
+      // Fetch user data from the authentication service
+      final userData = await AuthService().getUser();
+      if (userData != null) {
+        User user = User.fromJson(userData); // Convert Map to User
+        setState(() {
+          _username = user.username;
+        });
+      } else {
+        print("No user data found");
+      }
+    } catch (e) {
+      print("Error fetching username: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +69,7 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Jules Namiro 👏',
+                            _username ?? 'Guest',
                             style: kHeading6.copyWith(
                               color: kMatterhornBlack,
                             ),
@@ -193,6 +224,27 @@ class HomePage extends StatelessWidget {
                                   'Starbucks Drinks',
                                   'February 10, 12:25 PM',
                                   '- 110.000',
+                                ),
+                                _transactionList(
+                                  kOrange.withOpacity(0.2),
+                                  'assets/icons/triangle-down.png',
+                                  'Payment #Invest',
+                                  'February 5, 11:05 PM',
+                                  '- 130.000',
+                                ),
+                                _transactionList(
+                                  kOrange.withOpacity(0.2),
+                                  'assets/icons/triangle-down.png',
+                                  'Payment #Invest',
+                                  'February 5, 11:05 PM',
+                                  '- 130.000',
+                                ),
+                                _transactionList(
+                                  kOrange.withOpacity(0.2),
+                                  'assets/icons/triangle-down.png',
+                                  'Payment #Invest',
+                                  'February 5, 11:05 PM',
+                                  '- 130.000',
                                 ),
                                 _transactionList(
                                   kOrange.withOpacity(0.2),

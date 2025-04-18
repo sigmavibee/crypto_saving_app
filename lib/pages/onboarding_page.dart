@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 import '../styles/colors.dart';
 import '../styles/text_style.dart';
 
@@ -21,7 +20,7 @@ class OnBoardingPage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 30,
+              height: 70,
             ),
             Container(
               padding: EdgeInsets.all(26),
@@ -45,7 +44,7 @@ class OnBoardingPage extends StatelessWidget {
                     height: 15,
                   ),
                   Text(
-                    'welcome to Fleet Finance, the easy way to improve your finances and help you control expenses and income',
+                    'Welcome to Crypto Super App, the easy way to improve your finances and help you control expenses and income',
                     style: kSubtitle2.copyWith(color: kSuvaGray),
                     textAlign: TextAlign.center,
                   ),
@@ -54,8 +53,17 @@ class OnBoardingPage extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, '/main', (route) => false);
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      ).then((_) {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/auth', (route) => false);
+                      });
                     },
                     child: Text(
                       'Get Started',

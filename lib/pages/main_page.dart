@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../styles/colors.dart';
 import '../styles/text_style.dart';
 import 'home/home_page.dart';
-import 'portofolio/portofolio_page.dart';
+import 'orders/orders_page.dart';
 import 'profile/profile_page.dart';
-import 'support/support_page.dart';
+import 'coin/coin_page.dart.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -19,10 +19,10 @@ class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
   static List<Widget> pages = [
-      HomePage(),
-      PortofolioPage(),
-      SupportPage(),
-      ProfilePage(),
+    HomePage(),
+    OrdersPage(),
+    CoinPage(),
+    ProfilePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -71,14 +71,14 @@ class _MainPageState extends State<MainPage> {
                   width: 20,
                   color: _selectedIndex == 1 ? kBlueRibbon : kDarkGray,
                 ),
-                label: 'Portofolio'),
+                label: 'Orders'),
             BottomNavigationBarItem(
                 icon: Image.asset(
                   'assets/icons/support.png',
                   width: 20,
                   color: _selectedIndex == 2 ? kBlueRibbon : kDarkGray,
                 ),
-                label: 'Support'),
+                label: 'Coin'),
             BottomNavigationBarItem(
                 icon: Image.asset(
                   'assets/icons/profile.png',
