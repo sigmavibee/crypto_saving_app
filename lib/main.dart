@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
 
-import 'pages/auth/screen/auth_page.dart';
-import 'pages/main_page.dart';
-import 'pages/onboarding_page.dart';
+import 'app_router.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  final _appRouter = AppRouter(); // Tambahkan ini
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Presale Crypto App',
-      routes: {
-        OnBoardingPage.nameRoute: (context) => OnBoardingPage(),
-        AuthenticationPage.nameRoute: (context) => AuthenticationPage(),
-        MainPage.nameRoute: (context) => MainPage(),
-      },
+      routerDelegate: _appRouter.delegate(),
+      routeInformationParser:
+          _appRouter.defaultRouteParser(), // Fixed method call
     );
   }
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:auto_route/annotations.dart';
 import '../styles/colors.dart';
 import '../styles/text_style.dart';
 
+@RoutePage()
 class OnBoardingPage extends StatelessWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
-  static const nameRoute = '/';
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +19,7 @@ class OnBoardingPage extends StatelessWidget {
                 image: AssetImage('assets/images/onboard1.png'),
               ),
             ),
-            SizedBox(
-              height: 70,
-            ),
+            const SizedBox(height: 70),
             Container(
               padding: EdgeInsets.all(26),
               constraints: BoxConstraints.expand(
@@ -40,31 +38,15 @@ class OnBoardingPage extends StatelessWidget {
                     'Welcome!',
                     style: kHeading5.copyWith(color: kBlack),
                   ),
-                  SizedBox(
-                    height: 15,
-                  ),
+                  const SizedBox(height: 15),
                   Text(
                     'Welcome to Crypto Super App, the easy way to improve your finances and help you control expenses and income',
                     style: kSubtitle2.copyWith(color: kSuvaGray),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(
-                    height: 70,
-                  ),
+                  const SizedBox(height: 70),
                   TextButton(
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        },
-                      ).then((_) {
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, '/auth', (route) => false);
-                      });
-                    },
+                    onPressed: () {},
                     child: Text(
                       'Get Started',
                       style: kButton1.copyWith(color: kWhite),

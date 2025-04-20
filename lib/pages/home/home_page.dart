@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? _username;
+  String? _name;
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
       if (userData != null) {
         User user = User.fromJson(userData); // Convert Map to User
         setState(() {
-          _username = user.username;
+          _name = user.name;
         });
       } else {
         print("No user data found");
@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Text(
-                            _username ?? 'Guest',
+                            _name ?? 'Guest',
                             style: kHeading6.copyWith(
                               color: kMatterhornBlack,
                             ),

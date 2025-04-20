@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:auto_route/annotations.dart';
 
 import '../styles/colors.dart';
 import '../styles/text_style.dart';
@@ -7,9 +8,9 @@ import 'orders/orders_page.dart';
 import 'profile/profile_page.dart';
 import 'coin/coin_page.dart.dart';
 
+@RoutePage()
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
-  static const nameRoute = '/main';
 
   @override
   State<MainPage> createState() => _MainPageState();

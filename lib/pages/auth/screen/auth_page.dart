@@ -1,13 +1,15 @@
+import 'package:crypto_saving_app/pages/auth/screen/register_page.dart';
 import 'package:crypto_saving_app/styles/colors.dart';
+import 'package:auto_route/annotations.dart';
 import 'package:crypto_saving_app/styles/text_style.dart';
 import 'package:flutter/material.dart';
 
 import '../../../components/input_widget.dart';
 import '../../../services/auth_services.dart';
 
+@RoutePage()
 class AuthenticationPage extends StatefulWidget {
   const AuthenticationPage({super.key});
-  static const nameRoute = '/auth';
 
   @override
   State<AuthenticationPage> createState() => _AuthenticationPageState();
@@ -98,7 +100,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return const ResetPasswordScreen();
+                                return ResetPassword(press: () {});
                               },
                             ),
                           );
@@ -119,7 +121,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) {
-                            return const SignUpScreen();
+                            return RegisterPage();
                           },
                         ),
                       );
@@ -168,38 +170,6 @@ class ResetPassword extends StatelessWidget {
       child: Text(
         "Lupa password ?",
         style: TextStyle(color: Theme.of(context).primaryColor),
-      ),
-    );
-  }
-}
-
-class SignUpScreen extends StatelessWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Sign Up"),
-      ),
-      body: Center(
-        child: Text("Sign Up Screen"),
-      ),
-    );
-  }
-}
-
-class ResetPasswordScreen extends StatelessWidget {
-  const ResetPasswordScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Lupa Password"),
-      ),
-      body: Center(
-        child: Text("Reset Password Screen"),
       ),
     );
   }

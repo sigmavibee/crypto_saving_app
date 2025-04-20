@@ -23,6 +23,39 @@ class AuthService {
     return false;
   }
 
+  Future<bool> register(
+      String username, String email, String name, String password) async {
+    try {
+      final response = await http.post(
+        Uri.parse('http://10.0.2.2:3000/register'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'name': name,
+          'email': email,
+          'username': username,
+          'password': password
+        }),
+      );
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+//make if response.statusCode == 200
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return true;
+      } else {
+        // Log the error message from the response
+        print('Registration failed. Status code: ${response.statusCode}');
+        print('Error: ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      print('Error during registration: $e');
+      return false;
+    }
+  }
+
   Future<void> _saveToken(String token) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', token);
