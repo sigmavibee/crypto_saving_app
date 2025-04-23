@@ -1,9 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:crypto_saving_app/pages/auth/screen/register_page.dart';
-import 'package:crypto_saving_app/styles/colors.dart';
-import 'package:auto_route/annotations.dart';
 import 'package:crypto_saving_app/styles/text_style.dart';
 import 'package:flutter/material.dart';
 
+import '../../../app_router.dart';
 import '../../../components/input_widget.dart';
 import '../../../services/auth_services.dart';
 
@@ -21,15 +21,26 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   final AuthService authService = AuthService();
 
   void _login() async {
-    print('Attempting to log in with username: ${_usernameController.text}');
-    print('Attempting to log in with username: ${_passwordController.text}');
-    bool success = await authService.login(
-      _usernameController.text,
-      _passwordController.text,
-    );
+    final username = _usernameController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (username.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please enter both username and password.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    print('Attempting to log in with username: $username');
+    print('Attempting to log in with password: $password');
+
+    bool success = await authService.login(username, password);
     if (success) {
       print('Login successful. Navigating to main page.');
-      Navigator.pushNamedAndRemoveUntil(context, '/main', (route) => false);
+      context.router.push(const MainRoute());
     } else {
       print('Login failed. Showing error message.');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -147,7 +158,11 @@ class AlreadyHaveAnAccountCheck extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => press(),
+      onTap: () {
+        context.router.push(
+          const RegisterRoute(),
+        );
+      },
       child: Text(
         "Don't have an account? Sign Up",
         style: TextStyle(color: Theme.of(context).primaryColor),

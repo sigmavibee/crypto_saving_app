@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class InputLayout extends StatelessWidget {
-  String label;
-  StatefulWidget inputField;
+  final String label;
+  final StatefulWidget inputField;
 
   InputLayout(
     this.label,

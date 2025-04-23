@@ -1,14 +1,35 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:crypto_saving_app/pages/auth/screen/auth_page.dart';
 import 'package:flutter/material.dart';
 
+import '../../app_router.dart';
 import '../../components/box_information.dart';
 import '../../components/friend_profile_pic.dart';
 import '../../components/profile_picture.dart';
+import '../../services/auth_services.dart';
 import '../../styles/colors.dart';
 import '../../styles/text_style.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  final AuthService authService = AuthService();
+
+  void _logout() async {
+    bool success = false;
+    try {
+      await authService.logout();
+      success = true; // Set success to true if no exception occurs
+      context.router.push(const AuthenticationRoute());
+    } catch (e) {
+      print('Logout error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -183,11 +204,7 @@ class ProfilePage extends StatelessWidget {
                     Expanded(
                       child: ElevatedButton.icon(
                         onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AuthenticationPage()),
-                          );
+                          _logout();
                         },
                         style: ButtonStyle(
                           backgroundColor: WidgetStatePropertyAll(Colors.red),

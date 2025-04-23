@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class OrdersPage extends StatefulWidget {
@@ -19,19 +20,26 @@ class _OrdersPageState extends State<OrdersPage> {
       body: Column(
         children: [
           // Dropdown button to select between "Buy" and "NFT"
-          DropdownButton<String>(
-            value: _selectedOption,
-            items: <String>['Buy', 'Sell'].map((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-            onChanged: (String? newValue) {
+          CupertinoSlidingSegmentedControl<String>(
+            groupValue: _selectedOption,
+            children: {
+              'Buy': Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Text('Buy'),
+              ),
+              'Sell': Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: Text('Sell'),
+              ),
+            },
+            onValueChanged: (String? newValue) {
               setState(() {
                 _selectedOption = newValue!;
               });
             },
+            padding: const EdgeInsets.all(8.0), // Add padding to make it larger
           ),
           Expanded(
             child: GridView.builder(

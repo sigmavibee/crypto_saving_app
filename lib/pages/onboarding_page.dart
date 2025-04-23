@@ -1,5 +1,7 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:crypto_saving_app/app_router.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_route/annotations.dart';
+
 import '../styles/colors.dart';
 import '../styles/text_style.dart';
 
@@ -9,6 +11,7 @@ class OnBoardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //create list view builder with even number of items with container
     return Scaffold(
       body: Container(
         color: kBgColor.withOpacity(0.5),
@@ -46,7 +49,11 @@ class OnBoardingPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 70),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      context.router.push(
+                        const AuthenticationRoute(),
+                      );
+                    },
                     child: Text(
                       'Get Started',
                       style: kButton1.copyWith(color: kWhite),
@@ -73,3 +80,23 @@ class OnBoardingPage extends StatelessWidget {
     );
   }
 }
+
+
+
+
+       // body: ListView.builder(
+      //   itemCount: 100, // Hanya 50 angka genap dari 1-100
+      //   itemBuilder: (context, index) {
+      //     int primeNumber = index + 1; // Menghitung angka genap dari 1-100
+      //     if (primeNumber % 2 != 0) {
+      //       return const SizedBox.shrink(); // Mengabaikan angka genap
+      //     }
+
+      //     return ListTile(
+      //       title: Text('Angka $primeNumber'),
+      //       leading: CircleAvatar(
+      //         child: Text(primeNumber.toString()),
+      //       ),
+      //     );
+      //   },
+      // ),

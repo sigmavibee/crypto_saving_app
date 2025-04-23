@@ -9,7 +9,7 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
-  final _appRouter = AppRouter(); // Tambahkan ini
+  final _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Presale Crypto App',
       routerDelegate: _appRouter.delegate(),
-      routeInformationParser:
-          _appRouter.defaultRouteParser(), // Fixed method call
+      routeInformationParser: _appRouter.defaultRouteParser(),
     );
   }
 }
