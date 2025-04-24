@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:crypto_saving_app/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -99,7 +100,7 @@ class AuthService {
     return prefs.getString('token') != null;
   }
 
-  Future<Map<String, dynamic>?> getUser(int id) async {
+  Future<User?> getUser(int id) async {
     try {
       // Retrieve the token from shared preferences
       final prefs = await SharedPreferences.getInstance();
@@ -117,14 +118,11 @@ class AuthService {
       );
 
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
-      } else {
-        print('Failed to fetch user data. Status code: ${response.statusCode}');
-        return null;
+        return User.fromJson(json.decode(response.body));
       }
-    } catch (e) {
-      print('Error in getUser: $e');
       return null;
+    } catch (e) {
+      throw Exception('Failed to load user');
     }
   }
 }

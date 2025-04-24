@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../models/user.dart';
 import '../../services/auth_services.dart';
 import '../../styles/colors.dart';
 import '../../styles/text_style.dart';
@@ -15,20 +16,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String? _name;
+  bool _isLoading = true;
+  User? _user;
 
   @override
   void initState() {
     super.initState();
-    fetchUsername(); // Call fetchUsername when the widget is initialized
+    fetchUser(); // Ganti nama dari fetchUsername ke fetchUser
   }
 
-  bool _isLoading = true;
-
-  Future<void> fetchUsername() async {
+  Future<void> fetchUser() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final userId = prefs.getString('id'); // Retrieve the user ID as a String
+      final userId = prefs.getString('id');
 
       if (userId == null) {
         setState(() {
@@ -37,15 +37,13 @@ class _HomePageState extends State<HomePage> {
         return;
       }
 
-      final userData =
-          await AuthService().getUser(int.parse(userId)); // Convert to int
-      if (userData != null) {
-        setState(() {
-          _name = userData['name'];
-        });
-      }
+      final user = await AuthService().getUser(int.parse(userId));
+      setState(() {
+        _user = user;
+      });
     } catch (e) {
       // Handle error
+      print('Error fetching user: $e');
     } finally {
       setState(() {
         _isLoading = false;
@@ -57,19 +55,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
+          ? Center(child: CircularProgressIndicator())
           : Container(
               color: kBgColor.withOpacity(0.5),
               child: Stack(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(
-                      left: 30,
-                      top: 35,
-                      right: 30,
-                    ),
+                    padding:
+                        const EdgeInsets.only(left: 30, top: 35, right: 30),
                     child: Column(
                       children: [
                         Row(
@@ -78,18 +71,20 @@ class _HomePageState extends State<HomePage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                Text('Welcome',
+                                    style: kBody1.copyWith(
+                                        color: kMatterhornBlack)),
                                 Text(
-                                  'Welcome',
-                                  style: kBody1.copyWith(
-                                    color: kMatterhornBlack,
-                                  ),
-                                ),
-                                Text(
-                                  _name ?? 'Guest',
+                                  _user?.name ?? 'Guest', // Gunakan _user.name
                                   style: kHeading6.copyWith(
-                                    color: kMatterhornBlack,
-                                  ),
+                                      color: kMatterhornBlack),
                                 ),
+                                if (_user != null) ...[
+                                  Text(
+                                    'Member since ${_user!.createdAt}',
+                                    style: kCaption.copyWith(color: kGrey),
+                                  )
+                                ]
                               ],
                             ),
                             Container(

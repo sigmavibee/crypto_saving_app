@@ -18,8 +18,17 @@ class User {
       id: json['id'],
       username: json['username'],
       email: json['email'],
-      createdAt: json['created_at'],
+      createdAt:
+          DateTime.parse(json['created_at']).toLocal().toString().split(' ')[0],
       name: json['name'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'username': username,
+        'email': email,
+        'created_at': createdAt,
+        'name': name,
+      };
 }
