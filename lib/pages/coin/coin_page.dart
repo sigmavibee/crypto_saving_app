@@ -1,6 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:crypto_saving_app/services/coin_services.dart';
+import 'package:crypto_saving_app/styles/colors.dart';
 import 'package:flutter/material.dart';
 
+import '../../app_router.dart';
 import '../../models/coins.dart';
 
 class CoinPage extends StatefulWidget {
@@ -34,9 +37,22 @@ class _CoinPageState extends State<CoinPage> {
         _isLoading = false;
       });
       // Handle error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to fetch coins: $e')),
-      );
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('Failed to fetch coins: $e'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          });
       print('Failed to fetch coins: $e');
     }
   }
@@ -45,9 +61,10 @@ class _CoinPageState extends State<CoinPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('Coin'),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: kBgColor.withOpacity(0.5),
         actions: [
           IconButton(
             icon: Icon(Icons.search),
@@ -74,7 +91,8 @@ class _CoinPageState extends State<CoinPage> {
                       children: [
                         ElevatedButton(
                           onPressed: () {
-                            // Add buy action here
+                            context.router
+                                .push(CoinDetailsRoute(coinId: coin?.id ?? 0));
                           },
                           child: Text('Buy'),
                         ),

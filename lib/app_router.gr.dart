@@ -21,6 +21,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const AuthenticationPage(),
       );
     },
+    CoinDetailsRoute.name: (routeData) {
+      final args = routeData.argsAs<CoinDetailsRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: CoinDetailsPage(
+          key: args.key,
+          coinId: args.coinId,
+        ),
+      );
+    },
     MainRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -54,6 +64,44 @@ class AuthenticationRoute extends PageRouteInfo<void> {
   static const String name = 'AuthenticationRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [CoinDetailsPage]
+class CoinDetailsRoute extends PageRouteInfo<CoinDetailsRouteArgs> {
+  CoinDetailsRoute({
+    Key? key,
+    required int coinId,
+    List<PageRouteInfo>? children,
+  }) : super(
+          CoinDetailsRoute.name,
+          args: CoinDetailsRouteArgs(
+            key: key,
+            coinId: coinId,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'CoinDetailsRoute';
+
+  static const PageInfo<CoinDetailsRouteArgs> page =
+      PageInfo<CoinDetailsRouteArgs>(name);
+}
+
+class CoinDetailsRouteArgs {
+  const CoinDetailsRouteArgs({
+    this.key,
+    required this.coinId,
+  });
+
+  final Key? key;
+
+  final int coinId;
+
+  @override
+  String toString() {
+    return 'CoinDetailsRouteArgs{key: $key, coinId: $coinId}';
+  }
 }
 
 /// generated route for

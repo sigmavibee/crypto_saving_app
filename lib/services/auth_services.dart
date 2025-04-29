@@ -66,7 +66,7 @@ class AuthService {
 
 //make if response.statusCode == 200
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
+        jsonDecode(response.body);
         return true;
       } else {
         // Log the error message from the response

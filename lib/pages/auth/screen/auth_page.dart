@@ -19,6 +19,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthService authService = AuthService();
+  final ValueNotifier<bool> _obscureTextNotifier = ValueNotifier<bool>(true);
 
   void _login() async {
     final username = _usernameController.text.trim();
@@ -33,9 +34,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
       );
       return;
     }
-
-    print('Attempting to log in with username: $username');
-    print('Attempting to log in with password: $password');
 
     bool success = await authService.login(username, password);
     if (success) {
@@ -94,9 +92,27 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               ),
               InputLayout(
                 'Password',
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: customInputDecoration('Masukkan password'),
+                ValueListenableBuilder<bool>(
+                  valueListenable: _obscureTextNotifier,
+                  builder: (context, obscureText, child) {
+                    return TextFormField(
+                      controller: _passwordController,
+                      obscureText: obscureText,
+                      decoration:
+                          customInputDecoration('Masukkan password').copyWith(
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            obscureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            _obscureTextNotifier.value = !obscureText;
+                          },
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
               const SizedBox(height: 5),

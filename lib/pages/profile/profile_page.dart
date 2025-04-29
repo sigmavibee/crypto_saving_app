@@ -58,10 +58,9 @@ class _ProfilePageState extends State<ProfilePage> {
   final AuthService authService = AuthService();
 
   void _logout() async {
-    bool success = false;
     try {
       await authService.logout();
-      success = true; // Set success to true if no exception occurs
+// Set success to true if no exception occurs
       context.router.push(const AuthenticationRoute());
     } catch (e) {
       print('Logout error: $e');

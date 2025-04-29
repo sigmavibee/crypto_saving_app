@@ -11,7 +11,6 @@ class OnBoardingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //create list view builder with even number of items with container
     return Scaffold(
       body: Container(
         color: kBgColor.withOpacity(0.5),

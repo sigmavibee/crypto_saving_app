@@ -6,7 +6,7 @@ import '../styles/text_style.dart';
 import 'home/home_page.dart';
 import 'orders/orders_page.dart';
 import 'profile/profile_page.dart';
-import 'coin/coin_page.dart.dart';
+import 'coin/coin_page.dart';
 
 @RoutePage()
 class MainPage extends StatefulWidget {

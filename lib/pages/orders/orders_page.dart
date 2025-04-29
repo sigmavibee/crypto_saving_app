@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../styles/colors.dart';
+
 class OrdersPage extends StatefulWidget {
   const OrdersPage({super.key});
 
@@ -15,13 +17,18 @@ class _OrdersPageState extends State<OrdersPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Orders'),
-      ),
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          title: Text('Orders'),
+          backgroundColor: kBgColor.withOpacity(0.5)),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Dropdown button to select between "Buy" and "NFT"
           CupertinoSlidingSegmentedControl<String>(
             groupValue: _selectedOption,
+            backgroundColor: kBgColor.withOpacity(0.5),
             children: {
               'Buy': Padding(
                 padding:

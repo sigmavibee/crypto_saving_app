@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class User {
   final int id;
   final String username;
@@ -18,8 +20,8 @@ class User {
       id: json['id'],
       username: json['username'],
       email: json['email'],
-      createdAt:
-          DateTime.parse(json['created_at']).toLocal().toString().split(' ')[0],
+      createdAt: DateFormat('MMMM d, y')
+          .format(DateTime.parse(json['created_at']).toLocal()),
       name: json['name'],
     );
   }

@@ -1,6 +1,7 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:crypto_saving_app/app_router.dart';
 import 'package:crypto_saving_app/services/auth_services.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_route/annotations.dart';
 
 import '../../../components/input_widget.dart';
 
@@ -20,10 +21,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final AuthService authService = AuthService();
 
   void _register() async {
-    print('Attempting to log in with username: ${_nameController.text}');
-    print('Attempting to log in with username: ${_emailController.text}');
-    print('Attempting to log in with username: ${_usernameController.text}');
-    print('Attempting to log in with username: ${_passwordController.text}');
     bool success = await AuthService().register(
       _usernameController.text,
       _emailController.text,
@@ -41,7 +38,8 @@ class _RegisterPageState extends State<RegisterPage> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
+                  context.router
+                      .push(const AuthenticationRoute()); // Close the dialog
                 },
                 child: Center(child: Text('OK')),
               ),
