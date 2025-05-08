@@ -16,3 +16,4 @@ const Color kLuckyBlue = Color(0xFF363853);
 const Color kTropicalBlue = Color(0xFFADC8FF);
 const Color kTreeGreen = Color(0xFF6ED097);
 const Color kOrange = Color(0xFFF65725);
+const Color kRed = Color(0xFFFF0000);
