@@ -175,6 +175,16 @@ class _CoinBuyDetailsPageState extends State<CoinBuyDetailsPage> {
                             ),
                           ),
                           const SizedBox(width: 12),
+                          // add a text for calculate temporarily when inputing number
+                          Text(
+                            '0.00',
+                            style: TextStyle(
+                              color: kBlack,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(width: 12),
                           ElevatedButton(
                             onPressed: () {
                               // Handle buy action

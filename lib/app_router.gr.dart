@@ -21,6 +21,12 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const AuthenticationPage(),
       );
     },
+    BalanceRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: BalancePage(),
+      );
+    },
     CoinBuyDetailsRoute.name: (routeData) {
       final args = routeData.argsAs<CoinBuyDetailsRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -72,6 +78,20 @@ class AuthenticationRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'AuthenticationRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [BalancePage]
+class BalanceRoute extends PageRouteInfo<void> {
+  const BalanceRoute({List<PageRouteInfo>? children})
+      : super(
+          BalanceRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'BalanceRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

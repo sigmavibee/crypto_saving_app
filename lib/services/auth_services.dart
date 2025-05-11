@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:crypto_saving_app/models/user.dart';
+import 'package:crypto_saving_app/models/balance.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -123,6 +124,44 @@ class AuthService {
       return null;
     } catch (e) {
       throw Exception('Failed to load user');
+    }
+  }
+
+  //fetch saldo by user id
+  Future<Map<String, dynamic>?> fetchSaldo(int userId) async {
+    try {
+      // Retrieve the token from shared preferences
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+
+      if (token == null) {
+        print('No token found');
+        return null;
+      }
+
+      // Make the API call to fetch saldo
+      final response = await http.get(
+        Uri.parse(
+            'http://10.0.2.2:3000/users/balances/$userId'), // Pass the userId in the URL
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if (response.statusCode == 200) {
+        final decodedResponse = json.decode(response.body);
+        if (decodedResponse is Map<String, dynamic>) {
+          return decodedResponse;
+        } else {
+          print('Unexpected response format: $decodedResponse');
+          return null;
+        }
+      } else {
+        print('Failed to fetch saldo. Status code: ${response.statusCode}');
+        print('Error: ${response.body}');
+        return null;
+      }
+    } catch (e) {
+      print('Error during fetching saldo: $e');
+      return null;
     }
   }
 }

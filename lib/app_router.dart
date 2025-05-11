@@ -7,6 +7,7 @@ import 'package:crypto_saving_app/pages/coin/coin_buy_details_page.dart';
 import 'package:crypto_saving_app/pages/coin/coin_sell_details_page.dart';
 import 'package:crypto_saving_app/pages/main_page.dart';
 import 'package:crypto_saving_app/pages/onboarding_page.dart';
+import 'package:crypto_saving_app/pages/balance/balance_page.dart';
 
 part 'app_router.gr.dart';
 
@@ -21,6 +22,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: MainRoute.page, path: '/main'),
         AutoRoute(page: CoinBuyDetailsRoute.page, path: '/coinbuy-details'),
         AutoRoute(page: CoinSellDetailsRoute.page, path: '/coinsell-details'),
+        AutoRoute(page: BalanceRoute.page, path: '/balance')
         // AutoRoute(page: CoinRoute.page, path: '/coin'), // Uncomment this line if you have a CoinPage
         // AutoRoute(page: OrdersRoute.page, path: '/orders'), // Uncomment this line if you have an OrdersPage
         // AutoRoute(page: ProfileRoute.page, path: '/profile'), // Uncomment this line if you have a ProfilePage

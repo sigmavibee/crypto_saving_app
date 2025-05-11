@@ -1,8 +1,13 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:crypto_saving_app/pages/home/widget/transaction_button.dart';
+import 'package:crypto_saving_app/pages/home/widget/transaction_list.dart';
 import 'package:flutter/material.dart';
 
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../app_router.dart';
+import '../../models/balance.dart';
 import '../../models/user.dart';
 import '../../services/auth_services.dart';
 import '../../styles/colors.dart';
@@ -18,11 +23,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool _isLoading = true;
   User? _user;
+  String? _totalIdr;
 
   @override
   void initState() {
     super.initState();
-    fetchUser(); // Ganti nama dari fetchUsername ke fetchUser
+    fetchUser();
+    fetchSaldo();
   }
 
   Future<void> fetchUser() async {
@@ -44,6 +51,34 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       // Handle error
       print('Error fetching user: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> fetchSaldo() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final userId = prefs.getString('id');
+
+      if (userId == null) {
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+
+      final response = await AuthService().fetchSaldo(int.parse(userId));
+      if (response != null) {
+        final balanceResponse = BalanceResponse.fromJson(response);
+        setState(() {
+          _totalIdr = balanceResponse.totalIdr;
+        });
+      }
+    } catch (e) {
+      print('Error fetching saldo: $e');
     } finally {
       setState(() {
         _isLoading = false;
@@ -132,51 +167,62 @@ class _HomePageState extends State<HomePage> {
                               )
                             ],
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'My savings',
-                                style: kSubtitle2.copyWith(color: kWhite),
-                              ),
-                              SizedBox(
-                                height: 12,
-                              ),
-                              Text(
-                                'Rp. 10.430.000',
-                                style: kHeading5.copyWith(
-                                  color: kWhite,
+                          child: InkWell(
+                            hoverDuration: Duration(milliseconds: 100),
+                            onTap: () {
+                              context.router.push(BalanceRoute());
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'My savings',
+                                  style: kSubtitle2.copyWith(color: kWhite),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              LinearPercentIndicator(
-                                lineHeight: 4,
-                                padding: EdgeInsets.symmetric(horizontal: 0),
-                                progressColor: kEgyptianBlue,
-                                percent: 0.3,
-                                backgroundColor: kWhite,
-                              ),
-                              SizedBox(height: 16),
-                              Text(
-                                'Rp. 10.430.000 / Rp. 40.000.000',
-                                style: kCaption.copyWith(
-                                  color: kWhite,
+                                SizedBox(
+                                  height: 12,
                                 ),
-                              ),
-                            ],
+                                Text(
+                                  _totalIdr != null
+                                      ? 'Rp. ${_totalIdr}'
+                                      : 'N/A',
+                                  style: kHeading5.copyWith(
+                                    color: kWhite,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                LinearPercentIndicator(
+                                  lineHeight: 4,
+                                  padding: EdgeInsets.symmetric(horizontal: 0),
+                                  progressColor: kEgyptianBlue,
+                                  percent: 0.3,
+                                  backgroundColor: kWhite,
+                                ),
+                                SizedBox(height: 16),
+                                Text(
+                                  _totalIdr != null
+                                      ? 'Rp. ${_totalIdr}'
+                                      : 'N/A' + ' of 40.000.000',
+                                  style: kCaption.copyWith(
+                                    color: kWhite,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                         SizedBox(height: 30),
                         Row(
                           children: [
-                            _trasactionButton(
-                                'assets/icons/save.png', 'Save Money'),
+                            TransactionButton(
+                                icon: 'assets/icons/save.png', text: 'Deposit'),
                             SizedBox(
                               width: 25,
                             ),
-                            _trasactionButton('assets/icons/pay.png', 'Pay'),
+                            TransactionButton(
+                                icon: 'assets/icons/pay.png', text: 'Withdraw'),
                           ],
                         )
                       ],
@@ -218,54 +264,59 @@ class _HomePageState extends State<HomePage> {
                                   child: SingleChildScrollView(
                                     child: Column(
                                       children: [
-                                        _transactionList(
-                                          kTreeGreen.withOpacity(0.2),
-                                          'assets/icons/triangle-up.png',
-                                          'Success!',
-                                          'February 19, 03:25 PM',
-                                          '+ 100.000',
+                                        TransactionList(
+                                          bgColor: kTreeGreen.withOpacity(0.2),
+                                          icon: 'assets/icons/triangle-up.png',
+                                          title: 'Success!',
+                                          sub: 'February 19, 03:25 PM',
+                                          amount: '+ 100.000',
                                         ),
-                                        _transactionList(
-                                          kTreeGreen.withOpacity(0.2),
-                                          'assets/icons/triangle-up.png',
-                                          'Success!',
-                                          'February 16, 01:25 PM',
-                                          '+ 150.000',
+                                        TransactionList(
+                                          bgColor: kTreeGreen.withOpacity(0.2),
+                                          icon: 'assets/icons/triangle-up.png',
+                                          title: 'Success!',
+                                          sub: 'February 16, 01:25 PM',
+                                          amount: '+ 150.000',
                                         ),
-                                        _transactionList(
-                                          kOrange.withOpacity(0.2),
-                                          'assets/icons/triangle-down.png',
-                                          'Starbucks Drinks',
-                                          'February 10, 12:25 PM',
-                                          '- 110.000',
+                                        TransactionList(
+                                          bgColor: kOrange.withOpacity(0.2),
+                                          icon:
+                                              'assets/icons/triangle-down.png',
+                                          title: 'Starbucks Drinks',
+                                          sub: 'February 10, 12:25 PM',
+                                          amount: '- 110.000',
                                         ),
-                                        _transactionList(
-                                          kOrange.withOpacity(0.2),
-                                          'assets/icons/triangle-down.png',
-                                          'Payment #Invest',
-                                          'February 5, 11:05 PM',
-                                          '- 130.000',
+                                        TransactionList(
+                                          bgColor: kOrange.withOpacity(0.2),
+                                          icon:
+                                              'assets/icons/triangle-down.png',
+                                          title: 'Payment #Invest',
+                                          sub: 'February 5, 11:05 PM',
+                                          amount: '- 130.000',
                                         ),
-                                        _transactionList(
-                                          kOrange.withOpacity(0.2),
-                                          'assets/icons/triangle-down.png',
-                                          'Payment #Invest',
-                                          'February 5, 11:05 PM',
-                                          '- 130.000',
+                                        TransactionList(
+                                          bgColor: kOrange.withOpacity(0.2),
+                                          icon:
+                                              'assets/icons/triangle-down.png',
+                                          title: 'Payment #Invest',
+                                          sub: 'February 5, 11:05 PM',
+                                          amount: '- 130.000',
                                         ),
-                                        _transactionList(
-                                          kOrange.withOpacity(0.2),
-                                          'assets/icons/triangle-down.png',
-                                          'Payment #Invest',
-                                          'February 5, 11:05 PM',
-                                          '- 130.000',
+                                        TransactionList(
+                                          bgColor: kOrange.withOpacity(0.2),
+                                          icon:
+                                              'assets/icons/triangle-down.png',
+                                          title: 'Payment #Invest',
+                                          sub: 'February 5, 11:05 PM',
+                                          amount: '- 130.000',
                                         ),
-                                        _transactionList(
-                                          kOrange.withOpacity(0.2),
-                                          'assets/icons/triangle-down.png',
-                                          'Payment #Invest',
-                                          'February 5, 11:05 PM',
-                                          '- 130.000',
+                                        TransactionList(
+                                          bgColor: kOrange.withOpacity(0.2),
+                                          icon:
+                                              'assets/icons/triangle-down.png',
+                                          title: 'Payment #Invest',
+                                          sub: 'February 5, 11:05 PM',
+                                          amount: '- 130.000',
                                         ),
                                       ],
                                     ),
@@ -289,87 +340,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-    );
-  }
-
-  Widget _transactionList(
-      Color bgColor, String icon, String title, String sub, String amount) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 30),
-      child: Row(
-        children: [
-          SizedBox(
-            height: 30,
-            width: 30,
-            child: CircleAvatar(
-              backgroundColor: bgColor,
-              child: Image(
-                image: AssetImage(icon),
-                width: 14,
-              ),
-            ),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: kBody1.copyWith(color: kLuckyBlue),
-              ),
-              Text(
-                sub,
-                style: kCaption.copyWith(
-                  color: kLightGray,
-                ),
-              )
-            ],
-          ),
-          Spacer(),
-          Text(
-            amount,
-            style: kBody1.copyWith(
-              color: kLuckyBlue,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _trasactionButton(String icon, String text) {
-    return Expanded(
-      child: Container(
-        constraints: BoxConstraints.expand(
-          height: 60,
-        ),
-        decoration: BoxDecoration(
-          color: kNightBlack,
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              icon,
-              width: 24,
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Text(
-              text,
-              style: kBody1.copyWith(
-                color: kWhite,
-              ),
-            )
-          ],
-        ),
-      ),
     );
   }
 }

@@ -79,23 +79,3 @@ class OnBoardingPage extends StatelessWidget {
     );
   }
 }
-
-
-
-
-       // body: ListView.builder(
-      //   itemCount: 100, // Hanya 50 angka genap dari 1-100
-      //   itemBuilder: (context, index) {
-      //     int primeNumber = index + 1; // Menghitung angka genap dari 1-100
-      //     if (primeNumber % 2 != 0) {
-      //       return const SizedBox.shrink(); // Mengabaikan angka genap
-      //     }
-
-      //     return ListTile(
-      //       title: Text('Angka $primeNumber'),
-      //       leading: CircleAvatar(
-      //         child: Text(primeNumber.toString()),
-      //       ),
-      //     );
-      //   },
-      // ),
